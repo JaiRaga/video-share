@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import YouTube from '@material-ui/icons/YouTube'
+import { useHistory } from 'react-router'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -26,11 +27,16 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		flexGrow: 1,
 		fontWeight: 700,
+		cursor: 'pointer',
+	},
+	youtubeIcon: {
+		cursor: 'pointer',
 	},
 }))
 
 const Navbar = () => {
 	const classes = useStyles()
+	const history = useHistory()
 	return (
 		<div className={classes.root}>
 			<AppBar position='fixed' color='primary'>
@@ -43,8 +49,15 @@ const Navbar = () => {
 						<MenuIcon />
 					</IconButton>
 
-					<YouTube fontSize='large' />
-					<Typography variant='h6' className={classes.title}>
+					<YouTube
+						fontSize='large'
+						onClick={() => history.push('/')}
+						className={classes.youtubeIcon}
+					/>
+					<Typography
+						variant='h6'
+						onClick={() => history.push('/')}
+						className={classes.title}>
 						YouTube
 					</Typography>
 
