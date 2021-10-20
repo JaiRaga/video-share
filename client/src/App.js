@@ -1,25 +1,70 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, Fragment } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Routes
+import PrivateRoute from './components/routing/PrivateRoute'
+
+// Components
+import Navbar from './components/layout/Navbar'
+import Drawer from './components/layout/Drawer'
+import Home from './components/home/Home'
+// import Landing from "./component/layout/Landing";
+// import Login from "./component/auth/Login";
+// import Register from "./component/auth/Register";
+// import ProfileContainer from "./component/profile/ProfileContainer";
+// import Dashboard from "./component/dashboard/Dashboard";
+// import Profiles from "./component/Profiles/Profiles";
+// import Profile from "./component/profile/Profile";
+// import Followers from "./component/Profiles/Followers";
+// import Following from "./component/Profiles/Following";
+// import Setting from "./component/profile/Setting";
+
+// Redux
+import store from './redux/store'
+// import { loadUser } from "./Redux/actions/auth";
+// import { getAllTweets, getTweetsByMe } from "./Redux/actions/tweet";
+
+// utils
+import setAuthToken from './utils/setAuthToken'
+
+if (localStorage.token) {
+	setAuthToken(localStorage.token)
 }
 
-export default App;
+function App() {
+	useEffect(() => {
+		// store.dispatch(loadUser());
+		// store.dispatch(getAllTweets());
+		// store.dispatch(getTweetsByMe());
+	}, [])
+
+	// console.log(moment(moment() + 36e5 * 5).twitter());
+
+	return (
+		<Provider store={store}>
+			<Router>
+				<Fragment>
+					<Navbar />
+					<Drawer />
+
+					<Route exact path='/' component={Home} />
+
+					<Switch>
+						{/* <Route exact path='/register' component={Register} />
+            <Route exact path='/Login' component={Login} />
+            <PrivateRoute exact path='/profile' component={ProfileContainer} />
+            <PrivateRoute exact path='/profile/:id' component={Profile} />
+            <PrivateRoute exact path='/profiles' component={Profiles} />
+            <PrivateRoute exact path='/dashboard' component={Dashboard} />
+            <PrivateRoute exact path='/followers' component={Followers} />
+            <PrivateRoute exact path='/following' component={Following} />
+            <PrivateRoute exact path='/setting' component={Setting} /> */}
+					</Switch>
+				</Fragment>
+			</Router>
+		</Provider>
+	)
+}
+
+export default App
