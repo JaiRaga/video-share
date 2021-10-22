@@ -5,10 +5,20 @@ import Drawer from '../layout/Drawer'
 import Video from '../video/Video'
 import spacevid from '../../space.mp4'
 import sample from '../../sample.mp4'
+import Videos from '../video/Videos'
 
 const useStyles = makeStyles((theme) => ({
 	drawer: {
 		margin: 5,
+	},
+	videos: {
+		marginLeft: 10,
+		// margin: '0 5px',
+		// backgroundColor: '#f00',
+		// backgroundColor: '#123',
+	},
+	innerVideoContainer: {
+		backgroundColor: '#123',
 	},
 }))
 
@@ -32,12 +42,8 @@ const Home = () => {
 			<Grid item className={classes.drawer}>
 				<Drawer />
 			</Grid>
-
-			<Grid item xs={10}>
-				{val.map((_, ind) => (
-					// <Video src={ind % 2 === 0 ? spacevid : sample} />
-					<Video key={ind} ind={ind} src={spacevid} />
-				))}
+			<Grid item xs={11} className={classes.videos}>
+				<Videos />
 			</Grid>
 		</Grid>
 	)
