@@ -7,7 +7,6 @@ import PrivateRoute from './components/routing/PrivateRoute'
 
 // Components
 import Navbar from './components/layout/Navbar'
-import Drawer from './components/layout/Drawer'
 import Home from './components/home/Home'
 // import Landing from "./component/layout/Landing";
 // import Login from "./component/auth/Login";
@@ -27,6 +26,7 @@ import store from './redux/store'
 
 // utils
 import setAuthToken from './utils/setAuthToken'
+import Upload from './components/video/Upload'
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token)
@@ -46,9 +46,9 @@ function App() {
 			<Router>
 				<Fragment>
 					<Navbar />
-					<Drawer />
 
 					<Route exact path='/' component={Home} />
+					<Route exact path='/upload' component={Upload} />
 
 					<Switch>
 						{/* <Route exact path='/register' component={Register} />
