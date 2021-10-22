@@ -1,13 +1,14 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
+import { Grid, makeStyles } from '@material-ui/core'
+
+import Drawer from '../layout/Drawer'
 import Video from '../video/Video'
 import spacevid from '../../space.mp4'
 import sample from '../../sample.mp4'
 
 const useStyles = makeStyles((theme) => ({
-	content: {
-		// marginTop: 64,
-		// toolbar: theme.mixins.toolbar,
+	drawer: {
+		margin: 5,
 	},
 }))
 
@@ -22,16 +23,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
 	const classes = useStyles()
+
 	// console.log(classes.content.toolbar, classes.content.marginTop)
+	// const val = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 	const val = [1, 2, 3, 4]
 	return (
-		<div className={classes.content}>
-			<h1>Hi</h1>
-			{val.map((_, ind) => (
-				// <Video src={ind % 2 === 0 ? spacevid : sample} />
-				<Video key={ind} ind={ind} src={spacevid} />
-			))}
-		</div>
+		<Grid container>
+			<Grid item className={classes.drawer}>
+				<Drawer />
+			</Grid>
+
+			<Grid item xs={10}>
+				{val.map((_, ind) => (
+					// <Video src={ind % 2 === 0 ? spacevid : sample} />
+					<Video key={ind} ind={ind} src={spacevid} />
+				))}
+			</Grid>
+		</Grid>
 	)
 }
 
