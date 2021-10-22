@@ -14,9 +14,12 @@ import LogoutIcon from '@material-ui/icons/PersonOutline'
 
 const useStyles = makeStyles((theme) => ({
 	drawer: {
-		[theme.breakpoints.only('xs')]: {
+		[theme.breakpoints.between('xs', 'sm')]: {
 			display: 'none',
+			backgroundColor: 'red',
 		},
+		// backgroundColor: '#234',
+		// color: '#fff',
 	},
 	iconname: {
 		cursor: 'pointer',
@@ -31,10 +34,10 @@ const Drawer = () => {
 		<Grid
 			container
 			item
-			// xs={1}
+			xs={12}
 			direction='column'
 			// justifyContent='flex-start'
-			// alignItems='flex-start'
+			alignItems='flex-start'
 			className={classes.drawer}>
 			<Grid item>
 				<IconButton aria-label='home'>
