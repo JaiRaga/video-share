@@ -4,6 +4,7 @@ import {
 	IconButton,
 	makeStyles,
 	Tooltip,
+	Typography,
 	useMediaQuery,
 } from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home'
@@ -19,12 +20,17 @@ const useStyles = makeStyles((theme) => ({
 			display: 'none',
 			backgroundColor: 'red',
 		},
+
 		// backgroundColor: '#234',
 		// color: '#fff',
 	},
 	iconname: {
 		cursor: 'pointer',
 		marginBottom: 10,
+		textAlign: 'center',
+	},
+	iconFont: {
+		fontSize: '0.7em',
 	},
 }))
 
@@ -39,7 +45,7 @@ const Drawer = () => {
 			xs={12}
 			direction='column'
 			// justifyContent='flex-start'
-			alignItems='flex-start'
+			// alignItems='flex-start'
 			className={classes.drawer}>
 			<Grid item>
 				<IconButton aria-label='home' onClick={() => history.push('/')}>
@@ -47,7 +53,12 @@ const Drawer = () => {
 				</IconButton>
 			</Grid>
 			<Grid item className={classes.iconname} onClick={() => history.push('/')}>
-				Home
+				<Typography
+					align='center'
+					variant='button'
+					className={classes.iconFont}>
+					Home
+				</Typography>
 			</Grid>
 			<Grid item>
 				<IconButton aria-label='home' onClick={() => history.push('/saved')}>
@@ -58,7 +69,12 @@ const Drawer = () => {
 				item
 				className={classes.iconname}
 				onClick={() => history.push('/saved')}>
-				Saved
+				<Typography
+					align='center'
+					variant='button'
+					className={classes.iconFont}>
+					Saved
+				</Typography>
 			</Grid>
 			<Grid item>
 				<IconButton aria-label='home' onClick={() => history.push('/history')}>
@@ -69,7 +85,12 @@ const Drawer = () => {
 				item
 				className={classes.iconname}
 				onClick={() => history.push('/history')}>
-				History
+				<Typography
+					align='center'
+					variant='button'
+					className={classes.iconFont}>
+					History
+				</Typography>
 			</Grid>
 			<Grid item>
 				<IconButton aria-label='home' onClick={() => history.push('/setting')}>
@@ -80,7 +101,12 @@ const Drawer = () => {
 				item
 				className={classes.iconname}
 				onClick={() => history.push('/setting')}>
-				Setting
+				<Typography
+					align='center'
+					variant='button'
+					className={classes.iconFont}>
+					Setting
+				</Typography>
 			</Grid>
 			<Grid item>
 				<IconButton aria-label='home' onClick={() => history.push('/logout')}>
@@ -91,7 +117,12 @@ const Drawer = () => {
 				item
 				className={classes.iconname}
 				onClick={() => history.push('/logout')}>
-				Logout
+				<Typography
+					align='center'
+					variant='button'
+					className={classes.iconFont}>
+					Logout
+				</Typography>
 			</Grid>
 		</Grid>
 	)
