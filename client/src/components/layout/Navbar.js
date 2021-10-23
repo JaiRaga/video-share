@@ -22,6 +22,7 @@ import WatchLaterIcon from '@material-ui/icons/WatchLater'
 import HistoryIcon from '@material-ui/icons/History'
 import SettingIcon from '@material-ui/icons/Settings'
 import LogoutIcon from '@material-ui/icons/PersonOutline'
+import VideoUploadIcon from '@material-ui/icons/VideoCall'
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import PersonIcon from '@material-ui/icons/Person'
@@ -144,12 +145,12 @@ const Navbar = () => {
 					</ListItem>
 				</Link>
 
-				<Link to='/setting' className={classes.link}>
+				<Link to='/upload' className={classes.link}>
 					<ListItem button>
 						<ListItemIcon className={classes.icons}>
-							<AdjustIcon />
+							<VideoUploadIcon />
 						</ListItemIcon>
-						<ListItemText primary='Setting' />
+						<ListItemText primary='Upload' />
 					</ListItem>
 				</Link>
 
