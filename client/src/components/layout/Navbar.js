@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import {
 	AppBar,
+	Grid,
 	makeStyles,
 	Toolbar,
 	Typography,
@@ -22,6 +23,15 @@ import HistoryIcon from '@material-ui/icons/History'
 import SettingIcon from '@material-ui/icons/Settings'
 import LogoutIcon from '@material-ui/icons/PersonOutline'
 
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import PersonIcon from '@material-ui/icons/Person'
+import PersonPinIcon from '@material-ui/icons/PersonPin'
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun'
+import AdjustIcon from '@material-ui/icons/Adjust'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../../redux/actions/auth'
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -35,11 +45,20 @@ const useStyles = makeStyles((theme) => ({
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1,
 	},
+	display: {
+		[theme.breakpoints.down('md')]: {
+			display: 'none',
+		},
+		[theme.breakpoints.up('md')]: {
+			display: 'flex',
+		},
+	},
 	menuButton: {
 		marginRight: theme.spacing(1),
 	},
 	list: {
 		width: 223,
+		display: 'block',
 	},
 	title: {
 		flexGrow: 1,
@@ -51,12 +70,26 @@ const useStyles = makeStyles((theme) => ({
 	},
 	link: {
 		textDecoration: 'none',
-		color: '#1976d2',
+		color: '#fff',
 	},
 	icons: {
-		color: '#1976d2',
+		color: '#fff',
 		minWidth: '35px',
-		paddingRight: 20,
+		// paddingRight: 25,
+	},
+	drawerIcons: {
+		color: '#000',
+		minWidth: '35px',
+		marginRight: 15,
+		marginBottom: 3,
+	},
+	drawerLink: {
+		textDecoration: 'none',
+		color: '#000',
+	},
+	right: {
+		display: 'flex',
+		marginLeft: 'auto',
 	},
 }))
 
@@ -67,6 +100,8 @@ const Navbar = () => {
 	const [state, setState] = React.useState({
 		left: false,
 	})
+	const { isAuthenticated, loading } = useSelector((state) => state.auth)
+	const dispatch = useDispatch()
 
 	// const handleDrawerOpen = () => {
 	// 	setOpen(true)
@@ -88,24 +123,55 @@ const Navbar = () => {
 		setState({ [anchor]: open })
 	}
 
-	const guestLinks = (
+	const authLinks = (
 		<Fragment>
-			<List className={classes.list}>
-				<Link to='/dashboard' className={classes.link}>
+			<List className={classes.right}>
+				<Link to='/' className={classes.link}>
 					<ListItem button>
 						<ListItemIcon className={classes.icons}>
 							<HomeIcon />
 						</ListItemIcon>
-						<ListItemText primary='Twitter' />
+						<ListItemText primary='Home' />
+					</ListItem>
+				</Link>
+
+				<Link to='/profile' className={classes.link}>
+					<ListItem button>
+						<ListItemIcon className={classes.icons}>
+							<PersonPinIcon />
+						</ListItemIcon>
+						<ListItemText primary='Profile' />
+					</ListItem>
+				</Link>
+
+				<Link to='/setting' className={classes.link}>
+					<ListItem button>
+						<ListItemIcon className={classes.icons}>
+							<AdjustIcon />
+						</ListItemIcon>
+						<ListItemText primary='Setting' />
+					</ListItem>
+				</Link>
+
+				<Link to='/' className={classes.link}>
+					<ListItem button onClick={() => dispatch(logout())}>
+						<ListItemIcon className={classes.icons}>
+							<DirectionsRunIcon />
+						</ListItemIcon>
+						<ListItemText primary='Logout' />
 					</ListItem>
 				</Link>
 			</List>
-			<Divider />
+		</Fragment>
+	)
+
+	const guestLinks = (
+		<Fragment>
 			<List className={classes.right}>
 				<Link to='/login' className={classes.link}>
 					<ListItem button>
 						<ListItemIcon className={classes.icons}>
-							<HomeIcon />
+							<PersonIcon />
 						</ListItemIcon>
 						<ListItemText primary='Login' />
 					</ListItem>
@@ -114,7 +180,74 @@ const Navbar = () => {
 				<Link to='/register' className={classes.link}>
 					<ListItem button>
 						<ListItemIcon className={classes.icons}>
+							<PersonAddIcon />
+						</ListItemIcon>
+						<ListItemText primary='Register' />
+					</ListItem>
+				</Link>
+			</List>
+		</Fragment>
+	)
+
+	// For Drawer
+	const drawerAuthLinks = (
+		<Fragment>
+			<List>
+				<Link to='/' className={classes.drawerLink}>
+					<ListItem button>
+						<ListItemIcon className={classes.drawerIcons}>
 							<HomeIcon />
+						</ListItemIcon>
+						<ListItemText primary='Home' />
+					</ListItem>
+				</Link>
+
+				<Link to='/profile' className={classes.drawerLink}>
+					<ListItem button>
+						<ListItemIcon className={classes.drawerIcons}>
+							<PersonPinIcon />
+						</ListItemIcon>
+						<ListItemText primary='Profile' />
+					</ListItem>
+				</Link>
+
+				<Link to='/setting' className={classes.drawerLink}>
+					<ListItem button>
+						<ListItemIcon className={classes.drawerIcons}>
+							<AdjustIcon />
+						</ListItemIcon>
+						<ListItemText primary='Setting' />
+					</ListItem>
+				</Link>
+
+				<Link to='/' className={classes.drawerLink}>
+					<ListItem button onClick={() => dispatch(logout())}>
+						<ListItemIcon className={classes.drawerIcons}>
+							<DirectionsRunIcon />
+						</ListItemIcon>
+						<ListItemText primary='Logout' />
+					</ListItem>
+				</Link>
+			</List>
+		</Fragment>
+	)
+
+	const drawerGuestLinks = (
+		<Fragment>
+			<List>
+				<Link to='/login' className={classes.drawerLink}>
+					<ListItem button>
+						<ListItemIcon className={classes.drawerIcons}>
+							<PersonIcon />
+						</ListItemIcon>
+						<ListItemText primary='Login' />
+					</ListItem>
+				</Link>
+
+				<Link to='/register' className={classes.drawerLink}>
+					<ListItem button>
+						<ListItemIcon className={classes.drawerIcons}>
+							<PersonAddIcon />
 						</ListItemIcon>
 						<ListItemText primary='Register' />
 					</ListItem>
@@ -130,7 +263,8 @@ const Navbar = () => {
 			onClick={toggleDrawer(anchor, false)}
 			onKeyDown={toggleDrawer(anchor, false)}>
 			{/* {isAuthenticated ? authLinks : guestLinks} */}
-			{guestLinks}
+
+			{drawerAuthLinks}
 		</div>
 	)
 
@@ -161,7 +295,8 @@ const Navbar = () => {
 						YouTube
 					</Typography>
 
-					<Button color='inherit'>Login</Button>
+					{/* {isAuthenticated && !loading ? authLinks : guestLinks} */}
+					<div className={classes.display}>{authLinks}</div>
 				</Toolbar>
 				<SwipeableDrawer
 					anchor={'left'}
