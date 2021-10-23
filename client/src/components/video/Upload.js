@@ -1,7 +1,49 @@
-import axios from 'axios'
 import React, { useState } from 'react'
+import axios from 'axios'
+import { Grid, Typography, makeStyles, Button } from '@material-ui/core'
+
+const useStyles = makeStyles((theme) => ({
+	title: {
+		marginTop: 10,
+	},
+	form: {},
+	input: {
+		visibility: 'hidden',
+	},
+	uploadBtn: {
+		display: 'inline-flex',
+		cursor: 'pointer',
+		border: '1px solid rgba(0, 10, 255, 0.23)',
+		padding: '5px 15px',
+		fontSize: '0.875rem',
+		boxSizing: 'border-box',
+		fontFamily: 'Roboto, Helvetica, Arial',
+		fontWeight: 500,
+		lineHeight: '1.75',
+		borderRadius: 4,
+		letterSpacing: '0.02857em',
+		textTransform: 'uppercase',
+		backgroundColor: 'transparent',
+		color: 'rgba(0, 0, 0, 0.87)',
+		[theme.breakpoints.down(485)]: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+	},
+	submitBtn: {
+		[theme.breakpoints.down(485)]: {
+			display: 'flex',
+			justifyContent: 'center',
+			margin: 'auto',
+		},
+	},
+	preview: {
+		marginTop: 10,
+	},
+}))
 
 const Upload = () => {
+	const classes = useStyles()
 	const [fileInput, setFileInput] = useState('')
 	const [selectedFile, setSelectedFile] = useState()
 	const [previewSource, setPreviewSource] = useState('')
@@ -10,6 +52,7 @@ const Upload = () => {
 
 	const handleInputChange = (e) => {
 		const file = e.target.files[0]
+		console.log('files', e.target.files)
 		previewFile(file)
 		setSelectedFile(file)
 		setFileInput(e.target.value)
@@ -87,34 +130,49 @@ const Upload = () => {
 	}
 
 	return (
-		<div>
-			<h1>Upload an image</h1>
-			<form onSubmit={handleSubmit}>
-				<input type='file' onChange={handleInputChange} value={fileInput} />
-				<button type='submit'>Submit</button>
-			</form>
-			{previewSource &&
-				(fileInput.includes('.mp4') ? (
-					<video height='400' controls>
-						<source src={previewSource} type='video/mp4' />
-					</video>
-				) : (
-					<img src={previewSource} alt='kali' style={{ height: '400px' }} />
-				))}
-			<h1>Upload a Video</h1>
-			{/* <button id="upload_widget">Upload Video</button> */}
-			<button onClick={getVideos}>Show videos</button>
-			<ul>
-				{videos &&
-					videos.map((video) => (
-						<li>
-							<video height='400' controls autoPlay>
-								<source src={video} type='video/mp4' />
-							</video>
-						</li>
+		<Grid
+			container
+			direction='column'
+			justifyContent='center'
+			alignItems='center'>
+			<Typography variant='h4' className={classes.title}>
+				Upload a Video
+			</Typography>
+			<Grid item className={classes.form}>
+				<form onSubmit={handleSubmit}>
+					{/* <Grid container item justifyContent='center'>
+						<Grid item> */}
+					<label for='files' className={classes.uploadBtn}>
+						Select Video
+					</label>
+					<input
+						id='files'
+						type='file'
+						onChange={handleInputChange}
+						value={fileInput}
+						className={classes.input}
+					/>
+					{/* </Grid>
+					</Grid> */}
+					<Button
+						type='submit'
+						variant='outlined'
+						className={classes.submitBtn}>
+						Submit
+					</Button>
+				</form>
+			</Grid>
+			<Grid item className={classes.preview}>
+				{previewSource &&
+					(fileInput.includes('.mp4') ? (
+						<video height='400' controls>
+							<source src={previewSource} type='video/mp4' />
+						</video>
+					) : (
+						<img src={previewSource} alt='kali' style={{ height: '400px' }} />
 					))}
-			</ul>
-		</div>
+			</Grid>
+		</Grid>
 	)
 }
 
