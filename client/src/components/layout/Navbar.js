@@ -81,12 +81,23 @@ const useStyles = makeStyles((theme) => ({
 	drawerIcons: {
 		color: '#000',
 		minWidth: '35px',
-		marginRight: 15,
+		marginLeft: 'auto',
+		marginRight: 10,
 		marginBottom: 3,
 	},
 	drawerLink: {
 		textDecoration: 'none',
 		color: '#000',
+	},
+	youtubeDrawerIcon: {
+		color: 'red',
+		minWidth: '35px',
+		marginRight: 10,
+		marginBottom: 3,
+	},
+	youtubeText: {
+		fontSize: '1.072em',
+		fontWeight: 'bold',
 	},
 	right: {
 		display: 'flex',
@@ -190,10 +201,31 @@ const Navbar = () => {
 		</Fragment>
 	)
 
+	const youtubeLink = (
+		<Link to='/' className={classes.drawerLink}>
+			<ListItem button>
+				<ListItemIcon className={classes.youtubeDrawerIcon}>
+					<YouTube />
+				</ListItemIcon>
+				<ListItemText
+					primary={
+						<>
+							<Typography variant='caption' className={classes.youtubeText}>
+								YouTube
+							</Typography>
+						</>
+					}
+				/>
+			</ListItem>
+		</Link>
+	)
+
 	// For Drawer
 	const drawerAuthLinks = (
 		<Fragment>
 			<List>
+				{youtubeLink}
+				<Divider />
 				<Link to='/' className={classes.drawerLink}>
 					<ListItem button>
 						<ListItemIcon className={classes.drawerIcons}>
@@ -236,6 +268,7 @@ const Navbar = () => {
 	const drawerGuestLinks = (
 		<Fragment>
 			<List>
+				{youtubeLink}
 				<Link to='/login' className={classes.drawerLink}>
 					<ListItem button>
 						<ListItemIcon className={classes.drawerIcons}>
@@ -263,9 +296,7 @@ const Navbar = () => {
 			role='presentation'
 			onClick={toggleDrawer(anchor, false)}
 			onKeyDown={toggleDrawer(anchor, false)}>
-			{/* {isAuthenticated ? authLinks : guestLinks} */}
-
-			{drawerAuthLinks}
+			{isAuthenticated ? drawerAuthLinks : drawerGuestLinks}
 		</div>
 	)
 
@@ -295,9 +326,7 @@ const Navbar = () => {
 						className={classes.title}>
 						YouTube
 					</Typography>
-
-					{/* {isAuthenticated && !loading ? authLinks : guestLinks} */}
-					<div className={classes.display}>{authLinks}</div>
+					{isAuthenticated && !loading ? authLinks : guestLinks}
 				</Toolbar>
 				<SwipeableDrawer
 					anchor={'left'}
