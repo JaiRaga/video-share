@@ -1,9 +1,12 @@
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
-const { cloudinary } = require('../../utils/cloudinary')
 
-router.post('/upload-image', async (req, res) => {
+const auth = require('../../middleware/auth')
+const { cloudinary } = require('../../utils/cloudinary')
+const Video = require('../../models/Video')
+
+router.post('/upload-image', auth, async (req, res) => {
 	try {
 		console.log(1)
 		const fileStr = req.body.data
@@ -14,16 +17,16 @@ router.post('/upload-image', async (req, res) => {
 		console.log(3)
 
 		console.log(uploadResponse)
-		console.log(4)
-		res.send('Done.....')
+		res.status(201).send('Done...!')
 	} catch (error) {
 		console.log('error.....', error)
 	}
 })
 
-router.post('/upload-video', async (req, res) => {
+router.post('/upload-video', auth, async (req, res) => {
 	try {
-		console.log(1)
+		console.log(1, req.user)
+		const owner = req.user._id
 		const fileStr = req.body.data
 		// const encodedString = fileStr.replace('data:video/mp4;base64,', '')
 		// const data = Buffer.from(encodedString, 'base64')
@@ -37,8 +40,16 @@ router.post('/upload-video', async (req, res) => {
 		console.log(3)
 
 		console.log(uploadResponse)
-		console.log(4)
-		res.send('Done.....')
+		const { secure_url, public_id } = uploadResponse
+		const video = new Video({
+			owner,
+			secure_url,
+			public_id,
+		})
+		await video.populate('owner').execPopulate()
+		await video.save()
+		console.log(4, video)
+		res.status(201).send(video)
 	} catch (error) {
 		console.log('error.....', error)
 	}
