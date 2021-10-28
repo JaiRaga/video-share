@@ -5,7 +5,7 @@ const userRouter = require('./routes/api/users')
 const videoRouter = require('./routes/api/videos')
 
 const app = express()
-app.use(express.json({ limit: '4mb' }))
+app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '2mb' }))
 
 // Connects to api's in routes folder
