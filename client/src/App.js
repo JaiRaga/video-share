@@ -7,10 +7,13 @@ import PrivateRoute from './components/routing/PrivateRoute'
 
 // Components
 import Navbar from './components/layout/Navbar'
+import { Drawer } from '@material-ui/core'
 import Home from './components/home/Home'
+import Upload from './components/video/Upload'
 // import Landing from "./component/layout/Landing";
-// import Login from "./component/auth/Login";
-// import Register from "./component/auth/Register";
+import Login from './components/auth/Login'
+import Register from './components/auth/Register'
+import VideoPage from './components/video/VideoPage'
 // import ProfileContainer from "./component/profile/ProfileContainer";
 // import Dashboard from "./component/dashboard/Dashboard";
 // import Profiles from "./component/Profiles/Profiles";
@@ -21,12 +24,11 @@ import Home from './components/home/Home'
 
 // Redux
 import store from './redux/store'
-// import { loadUser } from "./Redux/actions/auth";
-// import { getAllTweets, getTweetsByMe } from "./Redux/actions/tweet";
+import { loadUser } from './redux/actions/auth'
+import { loadVideos } from './redux/actions/videos'
 
 // utils
 import setAuthToken from './utils/setAuthToken'
-import Upload from './components/video/Upload'
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token)
@@ -34,9 +36,8 @@ if (localStorage.token) {
 
 function App() {
 	useEffect(() => {
-		// store.dispatch(loadUser());
-		// store.dispatch(getAllTweets());
-		// store.dispatch(getTweetsByMe());
+		store.dispatch(loadUser())
+		store.dispatch(loadVideos())
 	}, [])
 
 	// console.log(moment(moment() + 36e5 * 5).twitter());
@@ -44,24 +45,23 @@ function App() {
 	return (
 		<Provider store={store}>
 			<Router>
-				<Fragment>
-					<Navbar />
+				<Navbar />
+				<Drawer />
 
+				<Switch>
+					<Route exact path='/register' component={Register} />
+					<Route exact path='/Login' component={Login} />
 					<Route exact path='/' component={Home} />
 					<Route exact path='/upload' component={Upload} />
-
-					<Switch>
-						{/* <Route exact path='/register' component={Register} />
-            <Route exact path='/Login' component={Login} />
-            <PrivateRoute exact path='/profile' component={ProfileContainer} />
+					<Route exact path='/video/:id' component={VideoPage} />
+					{/* <PrivateRoute exact path='/profile' component={ProfileContainer} />
             <PrivateRoute exact path='/profile/:id' component={Profile} />
             <PrivateRoute exact path='/profiles' component={Profiles} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/followers' component={Followers} />
             <PrivateRoute exact path='/following' component={Following} />
             <PrivateRoute exact path='/setting' component={Setting} /> */}
-					</Switch>
-				</Fragment>
+				</Switch>
 			</Router>
 		</Provider>
 	)
