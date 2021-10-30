@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux'
-// import auth from "./reducers/auth";
-// import tweet from "./reducers/tweet";
-// import profile from "./reducers/profile";
+import auth from './reducers/auth'
+import video from './reducers/videos'
 
 const rootReducer = combineReducers({
-	// auth,
-	// tweet,
-	// profile
+	auth,
+	video,
 })
 
 export default rootReducer
