@@ -8,7 +8,7 @@ const theme = createTheme({
 			main: '#e00404',
 		},
 		secondary: {
-			main: '#19857b',
+			main: '#1597E5',
 		},
 		error: {
 			main: red.A400,
