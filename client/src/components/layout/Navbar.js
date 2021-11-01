@@ -100,6 +100,12 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 'bold',
 	},
 	right: {
+		[theme.breakpoints.down('md')]: {
+			display: 'none',
+		},
+		[theme.breakpoints.up('md')]: {
+			display: 'flex',
+		},
 		display: 'flex',
 		marginLeft: 'auto',
 	},
