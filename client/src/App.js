@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
+// import localforage from 'localforage'
 
 // Routes
 import PrivateRoute from './components/routing/PrivateRoute'
@@ -29,6 +30,7 @@ import { loadVideos } from './redux/actions/videos'
 
 // utils
 import setAuthToken from './utils/setAuthToken'
+import setOfflineStore from './utils/setOfflineStore'
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token)
@@ -40,7 +42,8 @@ function App() {
 		store.dispatch(loadVideos())
 	}, [])
 
-	// console.log(moment(moment() + 36e5 * 5).twitter());
+	console.log('App.js', store.getState())
+	setOfflineStore(store.getState())
 
 	return (
 		<Provider store={store}>
