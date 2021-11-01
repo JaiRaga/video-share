@@ -3,6 +3,13 @@ const { Schema } = mongoose
 
 const videoSchema = Schema(
 	{
+		title: {
+			type: String,
+			required: true,
+		},
+		description: {
+			type: String,
+		},
 		secure_url: {
 			type: String,
 			reauired: true,
