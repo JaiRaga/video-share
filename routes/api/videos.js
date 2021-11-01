@@ -6,6 +6,7 @@ const auth = require('../../middleware/auth')
 const { cloudinary } = require('../../utils/cloudinary')
 const Video = require('../../models/Video')
 
+// Upload a image
 router.post('/upload-image', auth, async (req, res) => {
 	try {
 		console.log(1)
@@ -23,6 +24,7 @@ router.post('/upload-image', auth, async (req, res) => {
 	}
 })
 
+// Upload a Video
 router.post('/upload-video', auth, async (req, res) => {
 	try {
 		console.log(1, req.user)
@@ -55,20 +57,47 @@ router.post('/upload-video', auth, async (req, res) => {
 	}
 })
 
+// router.get('/videos', async (req, res) => {
+// 	try {
+// 		const response = await axios.get(
+// 			'https://363896476523249:atDjo--vU6WMmbSMsZA6wavPp_M@api.cloudinary.com/v1_1/ragas-youtube-clone/resources/video'
+// 		)
+
+// 		console.log(response.data)
+
+// 		const urls = response.data.resources.map((video) => video.secure_url)
+// 		console.log(urls)
+// 		res.send(urls)
+// 	} catch (error) {
+// 		console.log('error', error)
+// 		res.status(500).send('Internal Server Error..', error)
+// 	}
+// })
+
+// Get all Videos
 router.get('/videos', async (req, res) => {
 	try {
-		const response = await axios.get(
-			'https://363896476523249:atDjo--vU6WMmbSMsZA6wavPp_M@api.cloudinary.com/v1_1/ragas-youtube-clone/resources/video'
+		const videos = await Video.find({})
+		if (!videos)
+			return res.status(418).send('No videos avaliable at this time.')
+
+		Promise.all(
+			videos.map(async (video) => {
+				await video.populate('owner').execPopulate()
+				await video.save()
+				return video
+			})
 		)
-
-		console.log(response.data)
-
-		const urls = response.data.resources.map((video) => video.secure_url)
-		console.log(urls)
-		res.send(urls)
-	} catch (error) {
-		console.log('error', error)
-		res.status(500).send('Internal Server Error..', error)
+			.then((result) => {
+				return res.send(result)
+			})
+			.catch((err) => {
+				console.log(err)
+				res.status(500).send('Internal Server Error')
+			})
+	} catch (err) {
+		console.log('error from get all videos', err)
+		res.status(500).send('Internal Server Error')
 	}
 })
 
