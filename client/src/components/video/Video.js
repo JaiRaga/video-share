@@ -11,88 +11,129 @@ import {
 	CardActions,
 	IconButton,
 } from '@material-ui/core'
-import clsx from 'clsx'
+import { useHistory } from 'react-router-dom'
 import { red } from '@material-ui/core/colors'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-
-import Details from './Details'
+import offlineStore from '../../utils/offlineStore'
 
 const useStyle = makeStyles((theme) => ({
-	video: {
-		cursor: 'pointer',
-		// margin: '3px 8px',
-		width: 345,
-	},
 	root: {
 		maxWidth: 345,
 		margin: '6px 8px',
 		objectFit: 'cover',
 	},
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
+	video: {
+		cursor: 'pointer',
+		// margin: '3px 8px',
+		width: 345,
 	},
-	expand: {
-		transform: 'rotate(0deg)',
-		marginLeft: 'auto',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
+	videoTitle: {
+		cursor: 'pointer',
+		paddingBottom: 5,
 	},
 	avatar: {
 		backgroundColor: red[500],
+		cursor: 'pointer',
+	},
+	videoHeading: {
+		fontSize: '1.2rem',
+		fontFamily: 'Roboto, Helvetiva, Arial, sans-serif',
+		fontWeight: 700,
+		lineHeight: 1.43,
+		letterSpacing: '0.01071em',
+		margin: 0,
+	},
+	videoDate: {
+		color: 'rgba(0, 0, 0, 0.54)',
+		fontSize: '0.875rem',
+		fontFamily: 'Roboto, Helvetiva, Arial, sans-serif',
+		fontWeight: 400,
+		lineHeight: 1.43,
+		letterSpacing: '0.01071em',
+		margin: 0,
+	},
+	parent: {
+		display: 'flex',
+	},
+	username: {
+		marginTop: 0,
+		marginBottom: 5,
+		marginLeft: 73,
+		padding: 0,
+		fontSize: '0.89rem',
+		cursor: 'pointer',
+	},
+	views: {
+		marginTop: 0,
+		marginLeft: 10,
+		fontSize: '0.89rem',
 	},
 }))
 
-const Video = ({ src, ind }) => {
+const Video = ({ _id, secureUrl, owner, title, date }) => {
 	const classes = useStyle()
+	const history = useHistory()
+	let captalizedTitle = title.split('')
+	captalizedTitle[0] = captalizedTitle[0].toUpperCase()
+	console.log(captalizedTitle)
+	captalizedTitle = captalizedTitle.join('')
+	console.log(captalizedTitle)
+
 	const [expanded, setExpanded] = React.useState(false)
 
 	const handleVideoPlay = () => {
-		console.log('hello')
-		const vid = document.getElementById(ind)
-		console.log(vid)
+		const vid = document.getElementById(_id)
 		vid.play()
 	}
 
 	const handleVideoStop = () => {
-		console.log('Bye')
-		const vid = document.getElementById(ind)
-		console.log(vid)
+		const vid = document.getElementById(_id)
 		vid.pause()
 	}
 
-	const handleExpandClick = () => {
-		setExpanded(!expanded)
-	}
+	const videoTitle = (
+		<p
+			className={classes.videoHeading}
+			onClick={() => history.push(`/video/${_id}`)}>
+			{captalizedTitle}
+		</p>
+	)
+
+	const videoDate = (
+		<p
+			className={classes.videoDate}
+			onClick={() => history.push(`/video/${_id}`)}>
+			{date}
+		</p>
+	)
 
 	return (
 		<Card className={classes.root}>
-			{/* <CardMedia className={classes.media}> */}
 			<video
-				id={ind}
+				id={_id}
 				width='300'
 				height='200'
 				muted
 				loop
 				className={classes.video}
+				onClick={() => history.push(`/video/${_id}`)}
 				onMouseOver={handleVideoPlay}
 				onMouseLeave={handleVideoStop}>
-				<source src={src} type='video/mp4' />
+				<source src={secureUrl} type='video/mp4' />
 				Sorry, your browser doesn't support embedded videos.
 			</video>
 			{/* </CardMedia> */}
 			{/* <CardContent> */}
 			<CardHeader
 				avatar={
-					<Avatar aria-label='recipe' className={classes.avatar}>
-						R
+					<Avatar
+						aria-label='recipe'
+						className={classes.avatar}
+						onClick={() => history.push(`/video/${_id}`)}>
+						{owner.username[0]}
 					</Avatar>
 				}
 				action={
@@ -100,15 +141,18 @@ const Video = ({ src, ind }) => {
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title='Shrimp and Chorizo Paella'
-				subheader='September 14, 2016'
+				title={videoTitle}
+				subheader={videoDate}
+				className={classes.videoTitle}
 			/>
-			{/* <Typography variant='body2' color='textSecondary' component='p'>
-					This impressive paella is a perfect party dish and a fun meal to cook
-					together with your guests. Add 1 cup of frozen peas along with the
-					mussels, if you like.
-				</Typography> */}
-			{/* </CardContent> */}
+			<div className={classes.parent}>
+				<p
+					className={classes.username}
+					onClick={() => history.push(`/profile/${owner._id}`)}>
+					{owner.username.charAt(0).toUpperCase() + owner.username.slice(1)}
+				</p>
+				<p className={classes.views}>32M views</p>
+			</div>
 		</Card>
 	)
 	// <video
