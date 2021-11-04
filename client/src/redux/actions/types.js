@@ -16,3 +16,7 @@ export const POST_VIDEO = 'POST_VIDEO'
 export const GET_VIDEO = 'GET_VIDEO'
 export const UPDATE_VIDEO = 'UPDATE_VIDEO'
 export const DELETE_VIDEO = 'DELETE_VIDEO'
+// For Comments
+
+export const UPDATE_COMMENTS = 'UPDATE_COMMENTS'
+export const COMMENT_ERROR = 'COMMENT_ERROR'
