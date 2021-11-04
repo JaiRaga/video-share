@@ -5,7 +5,6 @@ const videoSchema = Schema(
 	{
 		title: {
 			type: String,
-			required: true,
 		},
 		description: {
 			type: String,
@@ -22,6 +21,21 @@ const videoSchema = Schema(
 			required: true,
 			ref: 'User',
 		},
+		comments: [
+			{
+				user: {
+					type: Schema.Types.ObjectId,
+					ref: 'User',
+				},
+				text: {
+					type: String,
+				},
+				date: {
+					type: Date,
+					default: Date.now,
+				},
+			},
+		],
 	},
 	{
 		timestamps: true,
