@@ -5,6 +5,8 @@ import {
 	POST_VIDEO,
 	UPDATE_VIDEO,
 	DELETE_VIDEO,
+	UPDATE_COMMENTS,
+	COMMENT_ERROR,
 } from './types'
 
 export const loadVideos = () => async (dispatch) => {
@@ -61,5 +63,24 @@ export const deleteVideo = (id) => async (dispatch) => {
 		dispatch({ type: DELETE_VIDEO, payload: id })
 	} catch (err) {
 		console.log('', err)
+	}
+}
+
+// Add Comment
+export const postComment = (id, comment) => async (dispatch) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	}
+
+	const body = JSON.stringify({ text: comment })
+
+	try {
+		const res = await axios.post(`/api/comment/${id}`, body, config)
+		dispatch({ type: UPDATE_COMMENTS, payload: { id, comments: res.data } })
+		// dispatch(getComments(id));
+	} catch (err) {
+		dispatch({ type: COMMENT_ERROR })
 	}
 }
