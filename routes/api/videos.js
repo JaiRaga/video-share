@@ -29,7 +29,9 @@ router.post('/upload-video', auth, async (req, res) => {
 	try {
 		console.log(1, req.user)
 		const owner = req.user._id
-		const fileStr = req.body.data
+		console.log(req.body.data)
+		const fileStr = req.body.data.videoStr
+		const { title, description } = req.body.data
 		// const encodedString = fileStr.replace('data:video/mp4;base64,', '')
 		// const data = Buffer.from(encodedString, 'base64')
 		// const blob = new Blob([data], { type: 'video/mp4' })
@@ -47,6 +49,8 @@ router.post('/upload-video', auth, async (req, res) => {
 			owner,
 			secure_url,
 			public_id,
+			title,
+			description,
 		})
 		await video.populate('owner').execPopulate()
 		await video.save()
@@ -98,6 +102,28 @@ router.get('/videos', async (req, res) => {
 	} catch (err) {
 		console.log('error from get all videos', err)
 		res.status(500).send('Internal Server Error')
+	}
+})
+
+// Comment on a Tweet
+router.post('/comment/:id', auth, async (req, res) => {
+	try {
+		const tweet = await Tweet.findById(req.params.id)
+		if (!tweet) {
+			return res.status(404).send('Not found!')
+		}
+		console.log(req.body)
+		const comment = {
+			user: req.user._id,
+			text: req.body.text,
+		}
+		tweet.comments.unshift(comment)
+		await tweet.populate('comments.user').execPopulate()
+		await tweet.save()
+
+		res.send(tweet.comments)
+	} catch (err) {
+		res.status(500).send("Error! Couldn't perform the action")
 	}
 })
 
