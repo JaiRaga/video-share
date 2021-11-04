@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Grid, Typography, makeStyles, Button } from '@material-ui/core'
+import {
+	Grid,
+	Typography,
+	makeStyles,
+	Button,
+	TextField,
+} from '@material-ui/core'
+import { postVideo } from '../../redux/actions/videos'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -9,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
 	form: {},
 	input: {
 		visibility: 'hidden',
+	},
+	videoDetails: {
+		marginTop: 10,
 	},
 	uploadBtn: {
 		display: 'inline-flex',
@@ -44,11 +55,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Upload = () => {
 	const classes = useStyles()
+	const dispatch = useDispatch()
 	const [fileInput, setFileInput] = useState('')
 	const [selectedFile, setSelectedFile] = useState()
 	const [previewSource, setPreviewSource] = useState('')
 	const [videos, setVideos] = useState([])
-	// const [] = useState()
+	const [videoDetails, setVideoDetails] = useState({
+		title: '',
+		description: '',
+	})
+
+	const { title, description } = videoDetails
+
+	const { video } = useSelector((state) => state.video)
+
+	// if (!!video && video.hasOwnProperty('secure_url')) {
+	// 	setFileInput('')
+	// 	setPreviewSource('')
+	// }
+
+	const onChange = (e) => {
+		setVideoDetails({ ...videoDetails, [e.target.name]: e.target.value })
+	}
 
 	const handleInputChange = (e) => {
 		const file = e.target.files[0]
@@ -76,12 +104,14 @@ const Upload = () => {
 			console.log('Video File Submit', 1, reader)
 			reader.readAsDataURL(selectedFile)
 			console.log(2, reader)
-			reader.onloadend = () => uploadVid(reader.result)
+			reader.onloadend = () =>
+				dispatch(postVideo({ videoStr: reader.result, title, description }))
 			console.log(3, reader)
 			reader.onerror = () => {
 				console.log('error**** video')
 			}
 			console.log(4, reader)
+			setPreviewSource('')
 		} else {
 			const reader = new FileReader()
 			reader.readAsDataURL(selectedFile)
@@ -89,21 +119,6 @@ const Upload = () => {
 			reader.onerror = () => {
 				console.log('error****')
 			}
-		}
-	}
-
-	const uploadVid = async (video) => {
-		try {
-			await fetch('/api/upload-video', {
-				method: 'POST',
-				body: JSON.stringify({ data: video }),
-				headers: { 'Content-Type': 'application/json' },
-			})
-
-			setFileInput('')
-			setPreviewSource('')
-		} catch (error) {
-			console.log('error', error)
 		}
 	}
 
@@ -140,8 +155,6 @@ const Upload = () => {
 			</Typography>
 			<Grid item className={classes.form}>
 				<form onSubmit={handleSubmit}>
-					{/* <Grid container item justifyContent='center'>
-						<Grid item> */}
 					<label for='files' className={classes.uploadBtn}>
 						Select Video
 					</label>
@@ -152,14 +165,39 @@ const Upload = () => {
 						value={fileInput}
 						className={classes.input}
 					/>
-					{/* </Grid>
-					</Grid> */}
 					<Button
 						type='submit'
 						variant='outlined'
 						className={classes.submitBtn}>
 						Submit
 					</Button>
+					<Grid
+						container
+						item
+						className={classes.videoDetails}
+						direction='column'
+						display='column'
+						justify='center'
+						alignItems='center'>
+						<TextField
+							id='title'
+							name='title'
+							label='Title'
+							variant='filled'
+							onChange={onChange}
+							required
+							fullWidth
+						/>
+						<TextField
+							id='description'
+							name='description'
+							label='Description'
+							variant='standard'
+							type='description'
+							onChange={onChange}
+							fullWidth
+						/>
+					</Grid>
 				</form>
 			</Grid>
 			<Grid item className={classes.preview}>
