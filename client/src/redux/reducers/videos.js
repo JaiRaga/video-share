@@ -32,7 +32,7 @@ export default (state = initialState, action) => {
 		case POST_VIDEO:
 			return {
 				...state,
-				video: payload,
+				videos: [...state.videos, payload],
 				loading: false,
 			}
 		case UPDATE_VIDEO:
