@@ -20,7 +20,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import offlineStore from '../../utils/offlineStore'
 
 import moment from 'moment'
-import dateTime from 'date-and-time'
 
 const useStyle = makeStyles((theme) => ({
 	root: {
@@ -86,11 +85,6 @@ const Video = ({ _id, secureUrl, owner, title, date }) => {
 	console.log(captalizedTitle)
 
 	const [expanded, setExpanded] = React.useState(false)
-
-	console.log('date', date)
-	// console.log('js Date', new Date())
-	// console.log('dt', dateTime.format(new Date(), 'YYYY/MM/DD HH:mm:ss'))
-	console.log('moment', moment(date).format('MMMM Do YYYY, h:mm:ss a'))
 
 	date = moment(date).format('h:mm a, MMMM Do YYYY')
 
