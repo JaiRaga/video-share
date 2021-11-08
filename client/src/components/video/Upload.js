@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import { postVideo } from '../../redux/actions/videos'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -56,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 const Upload = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
+	const history = useHistory()
+
 	const [fileInput, setFileInput] = useState('')
 	const [selectedFile, setSelectedFile] = useState()
 	const [previewSource, setPreviewSource] = useState('')
@@ -112,6 +115,7 @@ const Upload = () => {
 			}
 			console.log(4, reader)
 			setPreviewSource('')
+			history.push('/')
 		} else {
 			const reader = new FileReader()
 			reader.readAsDataURL(selectedFile)
