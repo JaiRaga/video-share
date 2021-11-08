@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
+import moment from 'moment'
 import offlineStore from '../../utils/offlineStore'
 import Video from './Video'
 
@@ -32,8 +33,10 @@ const VideoPage = (props) => {
 	const { videos } = useSelector((state) => state.video)
 	const video = videos.filter((video) => video._id === videoId)
 	// console.log(video)
-	const { secure_url, title, description } = video[0]
+	const { secure_url, title, description, createdAt } = video[0]
 	// console.log(secure_url)
+
+	const date = moment(createdAt).format('h:mm a, MMMM Do YYYY')
 	return (
 		<Grid container className={classes.root}>
 			<Grid
@@ -53,6 +56,7 @@ const VideoPage = (props) => {
 				<Typography variant='body1' className={classes.title}>
 					{description}
 				</Typography>
+				<Typography>{date}</Typography>
 			</Grid>
 		</Grid>
 	)
